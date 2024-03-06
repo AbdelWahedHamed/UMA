@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using UserManagmentAppAPI.Data;
 using UserManagmentAppAPI.Dto;
 using UserManagmentAppAPI.Models;
 using UserManagmentAppAPI.Services;
@@ -9,41 +8,51 @@ namespace UserManagmentAppAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class RoleController : ControllerBase
+	public class UserController : ControllerBase
 	{
+		private readonly UserService _userService;
 		private readonly RoleService _roleService;
-		public RoleController(RoleService roleService)
+
+		public UserController(UserService userService , RoleService roleService)
 		{
+			_userService = userService;
 			_roleService = roleService;
 		}
 
 		[HttpGet]
-		public IActionResult GetRoles()
+		public IActionResult GetUsers()
 		{
-			var roles = _roleService.GetRoles();
-			return Ok(roles);
+			var users = _userService.GetUsers();
+			return Ok(users);
 		}
 
 		[HttpPost]
-		public IActionResult CreateRole(RoleDto request)
+		public IActionResult CreateUser(UserDto request)
 		{
 			if (request == null)
 				return BadRequest(ModelState);
 
-			var role = _roleService.GetRoleByName(request.Name);
-			if (role != null)
+			var user = _userService.GetUserByName(request.Name);
+			if (user != null)
 			{
-				ModelState.AddModelError("", "Role already exists");
+				ModelState.AddModelError("", "User already exists");
 				return StatusCode(422, ModelState);
 			}
 
-			role = new Role
+			user = new User
 			{
-				Name = request.Name
+				Name = request.Name,
+				Email = request.Email,
+				Password = request.Password,
+				DateOfBirth = request.DateOfBirth,
+				RoleId = request.RoleId,
+				
 			};
+			user.Role = _roleService.GetRole(user.RoleId);
 
 
-			if (!_roleService.AddRole(role))
+
+			if (!_userService.AddUser(user))
 			{
 				ModelState.AddModelError("", "Something went wrong while saving");
 				return StatusCode(500, ModelState);
@@ -54,11 +63,11 @@ namespace UserManagmentAppAPI.Controllers
 		[HttpDelete("{id}")]
 		public IActionResult DeleteRole(int id)
 		{
-			var deletedRole = _roleService.GetRole(id);
-			if (deletedRole == null)
+			var deletedUser = _userService.GetUser(id);
+			if (deletedUser == null)
 				return NotFound();
 
-			if (!_roleService.DeleteRole(id))
+			if (!_userService.DeleteUser(id))
 			{
 				ModelState.AddModelError("", "Something went wrong while deleting the role");
 			}

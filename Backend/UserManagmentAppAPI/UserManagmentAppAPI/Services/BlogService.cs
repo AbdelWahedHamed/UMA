@@ -13,31 +13,39 @@ namespace UserManagmentAppAPI.Services
 			_context = context;
 		}
 
-		public async Task<List<Blog>> GetBlogs()
+		public List<Blog> GetBlogs()
 		{
-			return await _context.Blogs.OrderBy(r => r.Id).ToListAsync();
+			return  _context.Blogs.OrderBy(r => r.Id).ToList();
 		}
 
-		public async Task<Blog> GetBlog(int id)
+		public Blog GetBlog(int id)
 		{
-			return await _context.Blogs.FirstOrDefaultAsync(r => r.Id == id);
+			return  _context.Blogs.FirstOrDefault(r => r.Id == id);
 		}
 
-		public async Task AddBlog(Blog blog)
+		public  bool AddBlog(Blog blog)
 		{
-			await _context.Blogs.AddAsync(blog);
-			await _context.SaveChangesAsync();
+			if (blog != null)
+			{
+
+				_context.Blogs.Add(blog);
+				_context.SaveChanges();
+				return true;
+			}
+			return true;
 		}
 
-		public async Task DeleteBlog(int id)
+		public bool DeleteBlog(int id)
 		{
-			var deletedBlog = await GetBlog(id);
+			var deletedBlog =  GetBlog(id);
 
 			if (deletedBlog != null)
 			{
 				_context.Blogs.Remove(deletedBlog);
-				await _context.SaveChangesAsync();
+				 _context.SaveChanges();
+				return true;
 			}
+			return false;
 		}
 	}
 }

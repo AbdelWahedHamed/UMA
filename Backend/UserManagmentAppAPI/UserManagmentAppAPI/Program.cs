@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UserManagmentAppAPI.Data;
+using UserManagmentAppAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<RoleService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<BlogService>();
 
 var app = builder.Build();
 

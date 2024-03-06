@@ -13,31 +13,42 @@ namespace UserManagmentAppAPI.Services
 			_context = context;
 		}
 
-		public async Task<List<User>> GetUsers()
+		public List<User> GetUsers()
 		{
-			return await _context.Users.OrderBy(r => r.Name).ToListAsync();
+			return  _context.Users.OrderBy(r => r.Name).ToList();
 		}
 
-		public async Task<User> GetUsers(int id)
+		public User GetUser(int id)
 		{
-			return await _context.Users.FirstOrDefaultAsync(r => r.Id == id);
+			return  _context.Users.FirstOrDefault(r => r.Id == id);
+		}
+		public User GetUserByName(string name)
+		{
+			return _context.Users.FirstOrDefault(r => r.Name == name);
 		}
 
-		public async Task AddUser(User user)
+		public bool AddUser(User user)
 		{
-			await _context.Users.AddAsync(user);
-			await _context.SaveChangesAsync();
+			if (user != null)
+			{
+				_context.Users.Add(user);
+				_context.SaveChanges();
+				return true;
+			}
+			return false;
 		}
 
-		public async Task DeleteUser(int id)
+		public bool DeleteUser(int id)
 		{
-			var deletedUser = await GetUsers(id);
+			var deletedUser =  GetUser(id);
 
 			if (deletedUser != null)
 			{
 				_context.Users.Remove(deletedUser);
-				await _context.SaveChangesAsync();
+				 _context.SaveChanges();
+				return true;
 			}
+			return false;
 		}
 	}
 }
