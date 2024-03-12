@@ -15,7 +15,7 @@ namespace UserManagmentAppAPI.Services
 
 		public List<User> GetUsers()
 		{
-			return  _context.Users.OrderBy(r => r.Name).ToList();
+			return  _context.Users.Include(u => u.Role).ToList();
 		}
 
 		public User GetUser(int id)
@@ -37,7 +37,14 @@ namespace UserManagmentAppAPI.Services
 			}
 			return false;
 		}
+		
+		public bool SignIn(string email , string password)
+		{
+			if((_context.Users.FirstOrDefault(u => u.Email == email) != null) && (_context.Users.FirstOrDefault(u => u.Password == password)) != null)
+				return true;
 
+			return false;
+		}
 		public bool DeleteUser(int id)
 		{
 			var deletedUser =  GetUser(id);

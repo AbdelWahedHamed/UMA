@@ -17,6 +17,11 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<BlogService>();
+builder.Services.AddControllersWithViews()
+	.AddJsonOptions(options =>
+	{
+		options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+	});
 
 var app = builder.Build();
 
@@ -28,6 +33,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(options =>
+{
+	options.AllowAnyHeader();
+	options.AllowAnyOrigin();
+	options.AllowAnyMethod();
+}
+);
 
 app.UseAuthorization();
 

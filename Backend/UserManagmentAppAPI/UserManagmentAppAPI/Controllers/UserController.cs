@@ -13,7 +13,7 @@ namespace UserManagmentAppAPI.Controllers
 		private readonly UserService _userService;
 		private readonly RoleService _roleService;
 
-		public UserController(UserService userService , RoleService roleService)
+		public UserController(UserService userService, RoleService roleService)
 		{
 			_userService = userService;
 			_roleService = roleService;
@@ -39,14 +39,14 @@ namespace UserManagmentAppAPI.Controllers
 				return StatusCode(422, ModelState);
 			}
 
-			user = new User
+			 user = new User
 			{
 				Name = request.Name,
 				Email = request.Email,
 				Password = request.Password,
 				DateOfBirth = request.DateOfBirth,
 				RoleId = request.RoleId,
-				
+
 			};
 			user.Role = _roleService.GetRole(user.RoleId);
 
@@ -72,6 +72,15 @@ namespace UserManagmentAppAPI.Controllers
 				ModelState.AddModelError("", "Something went wrong while deleting the role");
 			}
 			return Ok("Deleted Successfully");
+		}
+
+		[HttpGet("{email}/{password}")]
+		public IActionResult SignIn(string email, string password)
+		{
+			if (_userService.SignIn(email, password))
+				return Ok();
+
+			return NotFound();
 		}
 	}
 }
