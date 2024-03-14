@@ -36,10 +36,10 @@ export class RoleComponent implements OnInit{
         if (Array.isArray(response)) {
           // Assign the array of users to this.users
           this.roles = response;
-          console.log('Users:', this.roles);
+          console.log('Roles:', this.roles);
         } else {
           this.roles = response.$values;
-          console.log('Users:', this.roles);
+          console.log('Roles:', this.roles);
 
         }})
      

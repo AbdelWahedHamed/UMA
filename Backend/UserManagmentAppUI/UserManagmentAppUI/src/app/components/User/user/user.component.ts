@@ -30,11 +30,8 @@ export class UserComponent implements OnInit{
   GetUsers(): void {
     this.userService?.getUsers().subscribe(
       (response: any) => {
-        if (Array.isArray(response)) {
+         {
           this.users = response;
-          console.log('Users:', this.users);
-        } else {
-          this.users = response.$values;
           console.log('Users:', this.users);
 
         }

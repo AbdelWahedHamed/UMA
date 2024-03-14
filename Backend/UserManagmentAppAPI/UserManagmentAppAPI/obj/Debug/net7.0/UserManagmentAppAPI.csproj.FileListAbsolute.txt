@@ -76,3 +76,4 @@ C:\User Managment App\Backend\UserManagmentAppAPI\UserManagmentAppAPI\obj\Debug\
 C:\User Managment App\Backend\UserManagmentAppAPI\UserManagmentAppAPI\obj\Debug\net7.0\ref\UserManagmentAppAPI.dll
 C:\User Managment App\Backend\UserManagmentAppAPI\UserManagmentAppAPI\obj\Debug\net7.0\UserManagmentAppAPI.sourcelink.json
 C:\User Managment App\Backend\UserManagmentAppAPI\UserManagmentAppAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\User Managment App\Backend\UserManagmentAppAPI\UserManagmentAppAPI\bin\Debug\net7.0\Newtonsoft.Json.dll

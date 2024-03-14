@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using UserManagmentAppAPI.Dto;
 using UserManagmentAppAPI.Models;
 using UserManagmentAppAPI.Services;
+using Newtonsoft.Json;
+
 
 namespace UserManagmentAppAPI.Controllers
 {
@@ -23,7 +25,17 @@ namespace UserManagmentAppAPI.Controllers
 		public IActionResult GetUsers()
 		{
 			var users = _userService.GetUsers();
-			return Ok(users);
+
+			// Configure Newtonsoft.Json settings
+			var jsonSettings = new JsonSerializerSettings
+			{
+				ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+			};
+
+			// Serialize the array of objects to JSON with the specified settings
+			var json = JsonConvert.SerializeObject(users, jsonSettings);
+
+			return Ok(json);
 		}
 
 		[HttpPost]
